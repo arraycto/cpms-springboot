@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--设置驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 定义别名，方便开发（返回、输出类型写成：store.cloudspace.pojo.User 不方便开发） -->
+    <typeAliases>
+        <!-- 单个别名自定义 -->
+        <!--  <typeAlias type="com.gulang.model.User" alias="user"/>-->
+
+        <!-- 批量自定义别名
+        指定包名，mybatis自动扫描包中的pojo类，自动定义别名，别名就是类名（首字母大小写都可以） -->
+        <package name="com.gulang.model" />
+
+        <!--如有需要自定义多个文件，只需要写多个
+        <package name="store.cloudspace.pojo" />即可
+        -->
+    </typeAliases>
+
+</configuration>
+
+

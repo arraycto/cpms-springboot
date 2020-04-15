@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulang.dao.UserRoleDao">
+    <resultMap type="UserRole" id="UserRoleResultMap" >
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"  />
+        <result property="roleDescript" column="role_descript"/>
+    </resultMap>
+
+    <insert id="addUserRole" parameterType="UserRole" >
+
+        INSERT INTO cpms_user_role(user_id,role_id) VALUE (#{userId},#{roleId})
+    </insert>
+
+    <delete id="deleteUserRole" parameterType="Integer">
+
+        DELETE from cpms_user_role where user_id = #{userId}
+    </delete>
+
+    <select id="queryRoleIdByUserId" resultType="Integer">
+        SELECT role_id
+        FROM cpms_user_role where user_id = #{userId}
+    </select>
+
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulang.dao.RoleDao">
+    <!--开启二级缓存  -->
+<!--    <cache readOnly="true" blocking="true" eviction = "LRU" flushInterval="10000" size="512"/>-->
+
+    <resultMap type="Role" id="roleResultMap" >
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"  />
+        <result property="roleDescript" column="role_descript"/>
+
+        <!--
+            association 一对一关联  获取到角色对应的权限
+            property="rolePermission"  需要在Role 实体类中定义 rolePermission 属性 数据类型为 RolePermission
+        -->
+        <association property="rolePermission" javaType="RolePermission">
+            <id column="role_id" property="roleId"/>
+            <result column="page_permission" property="pagePermission"/>
+            <result column="handle_permission" property="handlePermission"/>
+        </association>
+    </resultMap>
+
+
+        <!-- 通用的查询字段 -->
+    <sql id="Base_Column_List">
+		role_id,role_name,role_descript
+	</sql>
+
+    <!-- 插入数据成功后，返回自增id  keyProperty的值是实体类的主键属性名不是数据库的字段名-->
+    <insert id="addRole" parameterType="Role" useGeneratedKeys="true" keyProperty="roleId">
+
+        INSERT INTO cpms_role(role_id,role_name,role_descript) VALUE (#{roleId},#{roleName},#{roleDescript})
+    </insert>
+
+    <!-- 查询用户记录总数 -->
+    <select id="roleTotal" resultType="int">
+		select count(*) from cpms_role r WHERE r.role_id > 1
+	</select>
+
+
+    <select id="queryAllRole" resultMap="roleResultMap">
+        SELECT
+        r.*,rp.*
+        FROM cpms_role r
+        LEFT JOIN
+        cpms_role_permission rp
+        ON rp.role_id = r.role_id
+        WHERE r.role_id > 1
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="queryByRoleId" resultMap="roleResultMap">
+        SELECT *
+        FROM cpms_role where role_id = #{roleId}
+    </select>
+    <select id="findRepeatRole" resultType="int">
+        SELECT COUNT(*)
+        FROM cpms_role
+        where role_name = #{name}
+        <if test="roleId != null" >
+            AND role_id != #{roleId}
+        </if>
+    </select>
+    <delete id="deleteRole" parameterType="Integer">
+
+        DELETE from cpms_role where role_id = #{roleId}
+
+    </delete>
+
+    <update id="updateRole" parameterType="Role">
+        update cpms_role
+        set
+        role_name     = #{roleName},
+        role_descript = #{roleDescript}
+        where role_id = #{roleId}
+    </update>
+</mapper>

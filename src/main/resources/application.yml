@@ -1,0 +1,50 @@
+#【注：yml格式，切记不要使用Tab缩进，要使用空格键缩进，每一层两个空格键】
+spring:
+  profiles:
+    active: dev01 #默认为开发环境
+  server:
+    servlet:
+      context-path: / #访问页面的时候前面加上context-path 值  如context-path 为/admin 访问页面路径为 http://127.0.0.1:8080/admin/hello
+
+  servlet:
+    multipart:
+      max-file-size: 40MB   #设置单个上传的文件大小
+      max-request-size: 100MB  #设置单次请求的文件的总大小
+
+
+  datasource: #【配置数据源】
+    url: jdbc:mysql://localhost:3306/cpms?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      initial-size: 5 #连接池初始化大小
+      min-idle: 10 #最小空闲连接数
+      max-active: 20 #最大连接数
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" #不统计这些请求数据
+      stat-view-servlet: #访问监控网页的登录用户名和密码
+        login-username: druid
+        login-password: druid
+
+
+
+mybatis: #【加载mybatis的xml映射文件】
+
+  mapper-locations: classpath:mybatis/mapper/*.xml  # 指定sql映射文件位置
+
+  config-location: classpath:mybatis/mybatis-config.xml  # 指定全局配置文件位置
+
+
+logging: #【slf4j日志配置信息，控制台提示的日志信息】
+  level:
+    com:
+      gulang:
+        dao: debug   # 显示查询sql语句的详情
+    root: INFO  #DEBUG,WARN,ERROR  #日志配置DEBUG,INFO,WARN,ERROR
+# file: demo_log.log #配置日志生成的具体文件名（文件会生成在项目目录的根目录下）
+# path: /logs #配置日志文件所在目录名称
+
+
+# 不需要授权的公共接口(最后需要加 “,”)
+common_auth: "/user/info/**,"

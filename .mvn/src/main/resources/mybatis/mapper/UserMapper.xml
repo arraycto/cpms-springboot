@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulang.dao.UserDao">
+    <resultMap type="User" id="userResultMap" >
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"  />
+        <result property="userCreateTime" column="user_create_time"/>
+        <result property="userLastLoginTime" column="user_last_login_time"/>
+        <result property="userPassword" column="user_password"/>
+    </resultMap>
+
+    <!-- 通用的查询字段 -->
+    <sql id="Base_Column_List">
+		user_id,user_name,user_password,user_create_time,user_last_login_time
+	</sql>
+    <insert id="addUser" parameterType="User">
+
+        INSERT INTO cpms_user(user_id,user_name,user_password,user_create_time,user_last_login_time) VALUE (#{userId},#{userName},#{passwd},#{createTime},#{lastLoginTime})
+    </insert>
+
+    <!-- 查询用户记录总数 -->
+    <select id="selectUserCount" resultType="int">
+		select count(*) from cpms_user
+	</select>
+
+    <!-- 查询用户记录总数 -->
+    <select id="getUserByPage" resultMap="userResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cpms_user
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+
+    </select>
+
+    <select id="queryAllUser" resultMap="userResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM cpms_user
+    </select>
+
+    <select id="queryByName" resultMap="userResultMap">
+        SELECT *
+        FROM cpms_user where user_name = #{userName}
+    </select>
+</mapper>

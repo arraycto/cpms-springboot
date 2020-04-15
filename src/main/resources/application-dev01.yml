@@ -1,0 +1,4 @@
+server:
+  port: 8080        # 设置监听端口号
+
+#通过 IDEA配置多个工程运行不同的端口  在 Program arguments 添加 --spring.profiles.active=dev01

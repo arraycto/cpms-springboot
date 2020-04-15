@@ -1,0 +1,42 @@
+ #springboot2.0 整合SpringJPA配置信息
+spring:
+  profiles:
+    active: dev #默认为开发环境
+  server:
+    servlet:
+      context-path: / #访问页面的时候前面加上context-path 值  如context-path 为/admin 访问页面路径为 http://127.0.0.1:8080/admin/hello
+    port: 8080        # 设置监听端口号
+
+
+  # rabbitmq 配置
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: test
+    password: test
+    publisher-confirms: true
+    listener:
+      concurrency: 2 # 最小消息监听线程数
+      max-concurrency: 2 #最大监听线程数
+#    virtual-host: /
+
+#加载mybatis的xml映射文件
+mybatis:
+  # 指定sql映射文件位置
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+  # 指定全局配置文件位置
+  config-location: classpath:mybatis/mybatis.config.xml
+
+#slf4j日志配置信息
+logging:
+  level:
+    root: INFO #日志配置DEBUG,INFO,WARN,ERROR
+#  file: demo_log.log #配置日志生成的具体文件名（文件会生成在项目目录的根目录下）
+#  path: /var/logs #配置日志文件所在目录名称
+
+
+
+
+
+

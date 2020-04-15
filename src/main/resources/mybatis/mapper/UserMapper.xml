@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gulang.dao.UserDao">
+
+<!--    <cache readOnly="true" blocking="true" eviction = "LRU" flushInterval="10000" size="1024"/>-->
+    <resultMap type="User" id="userResultMap" >
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"  />
+        <result property="createTime" column="create_time"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="status" column="status"/>
+
+        <!--
+             collection 定义 一对多关联（一个用户可以对应多个角色）
+             collection 的属性解释：
+             property: 需要把关联的数据映射到指定的实体类属性中 （这里我们在User实体类添加了private List<Role> roles;）
+             ofType： 指定的属性所属的数据类型 private List<Role> roles; 这里是Role数据类型
+
+            （
+              注意：虽然我们表的设计有user、user_role、role三张表进行关联，但是我们查询数据时，只需要查询出
+               user 表和role表的数据，不需要user_role 表的数据，所以这里我们只需要在User实体类中添加
+               private List<Role> roles 属性就可以了。
+
+                数据格式：
+                 {
+                    "userId": 3,
+                    "userName": "李四",
+                    "createTime": "2019-09-16 14:24:51",
+                    "lastLoginTime": "2019-09-17 14:25:12",
+                    "status": 0,
+                    "password": null,
+                    "roles": [  //这里就是User实体类定义的关联属性返回的数据
+                        {
+                            "roleId": 2,
+                            "roleName": "管理员",
+                            "roleDescript": null
+                        },
+                        {
+                            "roleId": 3,
+                            "roleName": "编辑",
+                            "roleDescript": null
+                        }
+                    ],
+                 },
+             ）
+       -->
+        <collection  property="roles" ofType="Role">
+            <!--
+              这里一定要写 result 返回结果，否则查询出来的数据无法映射到实体类指定的属性中去
+              需要什么字段就用result返回它
+            -->
+            <id column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+
+            <!--
+                在一条查询语句中我们有一对多 一对一时，可以使用这种嵌套的写法
+                association  一对一的关联
+                注：association 的表明数据类型用的是 javaType 而 collection 用的是 ofType
+            -->
+<!--            <association property="role" javaType="Role">-->
+<!--                <id column="role_id" property="roleId"/>-->
+<!--                <result column="role_name" property="roleName"/>-->
+<!--            </association>-->
+        </collection >
+    </resultMap>
+
+    <!-- 通用的查询字段 -->
+    <sql id="Base_Column_List">
+		user_id,user_name,user_password,create_time,last_login_time,status
+	</sql>
+
+    <!-- 插入数据成功后，返回自增id  keyProperty的值是实体类的属性名不是数据库的字段名-->
+    <insert id="addUser"  useGeneratedKeys="true" keyProperty="userId">
+
+        INSERT INTO cpms_user(user_id,user_name,user_password,create_time,last_login_time)
+        VALUE (#{userId},#{userName},#{userPassword},#{createTime},#{lastLoginTime})
+    </insert>
+
+    <!-- 查询用户记录总数 -->
+    <select id="selectUserCount" resultType="int">
+		select count(*) from cpms_user
+	</select>
+
+    <!-- 查询用户记录总数 -->
+    <select id="getUserByPage" resultMap="userResultMap">
+        select
+         user_id
+        from cpms_user
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+
+    </select>
+
+    <!--
+        关联查询，返回结果使用 resultType="java.util.HashMap"，
+
+        然后在dao中使用 List<HashMap<String, Object>> 来接收结果。这样可以免去在实体类中定义一个roles属性来接收关联查询的角色数据
+    -->
+
+    <select id="queryAllUser" resultType="java.util.HashMap">
+         SELECT u.user_id as userId,u.user_name as userName,DATE_FORMAT(u.create_time,'%Y-%m-%d %H:%i:%s') as createTime ,u.status,
+         GROUP_CONCAT(r.role_id) AS roleIds ,
+         GROUP_CONCAT(r.role_name SEPARATOR '、') AS roleName
+         FROM cpms_user u , cpms_user_role ur,cpms_role r
+         WHERE u.user_id > 1
+         AND u.status != -1
+         AND u.user_id = ur.user_id
+         AND r.role_id = ur.role_id
+         GROUP BY u.user_id
+         limit #{pageIndex} , #{pageSize}
+    </select>
+
+    <select id="userTotal" resultType="int">
+        SELECT COUNT(u.user_id) as total
+        from cpms_user u
+        WHERE u.user_id > 1
+        AND u.status != -1
+    </select>
+    <!--
+        关联查询 返回结果使用 resultMap="userResultMap"，
+        然后dao中使用  List<实体类> 来接收结果，还需要通过标签 <collection></collection>设置关联关系。并且还需要在实体类中定义
+        接收关联数据的属性。
+
+     -->
+    <!--    <select id="queryAllUser" resultMap="userResultMap">-->
+    <!--        SELECT-->
+    <!--        u.user_id,u.user_name,u.create_time,status,r.role_name,r.role_id-->
+    <!--        FROM cpms_user u , cpms_user_role ur,cpms_role r  WHERE u.user_id > 1-->
+    <!--        AND u.user_id = ur.user_id AND r.role_id = ur.role_id-->
+    <!--    </select>-->
+
+
+    <select id="queryByNamePwd" resultMap="userResultMap">
+        SELECT *
+        FROM cpms_user where user_name = #{name} AND user_password = #{passwd}
+    </select>
+
+    <select id="queryById" resultMap="userResultMap" parameterType="Long">
+        SELECT *
+        FROM cpms_user where user_id = #{id}
+    </select>
+    <update id="updateUser" parameterType="User">
+        update cpms_user
+        set user_name = #{userName}
+        where user_id = #{userId}
+    </update>
+    <update id="updateLastLoginTime">
+        update cpms_user
+        set last_login_time = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s')
+        where user_id = #{userId}
+    </update>
+    <delete id="deleteUser" parameterType="Integer">
+
+        DELETE from cpms_user where user_id = #{userId}
+
+    </delete>
+
+    <select id="findRepeatName" resultType="Integer">
+        SELECT COUNT(user_id)
+        FROM cpms_user
+        where user_name = #{name}
+        <if test="id != null" >
+             AND user_id != #{id}
+        </if>
+
+    </select>
+
+</mapper>
