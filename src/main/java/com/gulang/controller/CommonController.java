@@ -10,6 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @describe: [公共控制器]
+ * @author: liu zai chun
+ * @date: 2020/4/18 14:09
+ * @email: 1226740471@qq.com
+ */
+
 public class CommonController {
     @Autowired
     UserRoleService userRoleService;

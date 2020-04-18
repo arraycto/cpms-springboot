@@ -26,7 +26,7 @@ import java.util.Map;
  * @Email 1226740471@qq.com
  */
 public class JwtFilter extends BasicHttpAuthenticationFilter {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
 
     /**
      *  des ：做登录验证处理，如果返回true,则进入到PermissionFilter 进行权限验证
@@ -79,7 +79,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 
             boolean  check = JwtUtil.checkTokenExpire(jwtToken); // 这里进行token过期时间验证
             if(check) {
-                System.out.println("即将过期，准备刷新token");
+                logger.info("【即将过期，准备刷新token");
 
                 String newJwt = JwtUtil.refreshToken(jwtToken);
                 HttpServletResponse resp = (HttpServletResponse) response;
