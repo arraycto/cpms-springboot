@@ -1,4 +1,3 @@
-# springboot-admin
 基于springboot2.0+vue2.0搭建的前后端分离的后台RBAC权限系统脚手架
 
 **本项目的主要特点：**
