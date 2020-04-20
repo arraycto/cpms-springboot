@@ -38,11 +38,7 @@ public class LoginController extends CommonController
 
     @RequestMapping(value = "/ulogin",method = RequestMethod.POST)
     public Object submitLogin( String username, String password) {
-        /*
-         * 1.由于我们使用的是shiro+JWT的方式做的登录验证，所以在登录的时候不需要按之前单独使用shiro的方式
-         * 来做登录验证，因为使用shiro做登录验证，是利用session来做判断的。而我们使用的是JWT所以不需要session
-         * 2.这里我们使用普通的登录验证方式
-         */
+
         User user = userService.queryByNamePwd(username,ToolUtil.md5UserPwd(password));
         if( user == null ) {
 

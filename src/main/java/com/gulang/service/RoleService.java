@@ -20,11 +20,6 @@ public interface RoleService {
 
     PageManager queryAllRole(int page, int pageSize);
 
-    /**
-     * 传入的是两个以上的参数时，必须使用@Param (@Param("userName")String name)注解指明实体类字段对应的参数
-     *  SELECT *  FROM user where user_name = #{userName} AND passwd = #{passwd}
-     *  或者直接用map集合传参: key-value
-     * */
     Role queryByRoleId(Integer roleId);
 
     int selectRoleCount();

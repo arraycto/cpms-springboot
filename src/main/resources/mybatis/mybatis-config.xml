@@ -3,15 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!--
-        InputStream inputStream = Resources.getResourceAsStream("mybatis/mybatis-config.xml");
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
-        mybatis执行的原理：
-        1.首先启动的时候，会加载mybatis.xml配置文件，并读取为流数据，通过解析流数据并创建configuration对象
-        2.通过 SqlSessionFactoryBuilder的build方法根据configuration对象创建一个sqlSessionFactory
-
-    -->
 
     <settings>
         <!--设置驼峰-->
@@ -19,56 +10,11 @@
         <!-- 一级缓存，默认是开启的，缓存的范围 SESSION 或者 STATEMENT。-->
 
         <setting name="localCacheScope" value="STATEMENT"/>
-        <!--
-            【注】
-            （1）配置一级缓存为 SESSION 级别
-　　            Controller 中做两次调用，代码如下：
-                @RequestMapping("/getUser")
-                public UserEntity getUser(Long id) {
-                    //第一次调用
-                    UserEntity user1=userMapper.getOne(id);
-                    //第二次调用
-                    UserEntity user2=userMapper.getOne(id);
-                    return user1;
-                }
-            第二次查询并没有用到缓存数据，每次 mapper 层的一次接口调用如 getOne 就会创建一个 session，
-            并且在执行完毕后关闭 session。所以两次调用并不在一个 session 中，一级缓存并没有发生作用。开启事务，
-            Controller 层代码如下：
-            @RequestMapping("/getUser")
-            @Transactional(rollbackFor = Throwable.class)  //开启事务，则可以保证在同一session中
-            public UserEntity getUser(Long id) {
-                //第一次调用
-                UserEntity user1=userMapper.getOne(id);
-                //第二次调用
-                UserEntity user2=userMapper.getOne(id);
-                return user1;
-            }
-            由于在同一个事务中，虽然调用了 select 操作两次但是只执行了一次 sql ，缓存发挥了作用。
-
-            同一 session 且 select 调用 > 1 次。如果在两次调用中间插入 update 操作，缓存会立即失效。
-            只要 session 中有 insert、update 和 delete 语句，该 session 中的缓存会立即被刷新。但是注意这只是在同一
-            session 之间。不同 session 之间如 session1 和 session2，session1 里的 insert/update/delete 并不会影响
-            session 2 下的缓存，这在高并发或者分布式的情况下会产生脏数据。所以建议将一级缓存级别调成 statement。
-
-             为了避免这个问题，可以将一级缓存的级别设为 statement 级别的，这样每次查询结束都会清掉一级缓存（也就是关闭了
-             一级缓存）
-        -->
-
 
         <!-- 二级缓存，针对的是mapper,缓存数据是共享的，需要手动开启-->
         <setting name="cacheEnabled" value="true"/>
 
-        <!--
-        【注】
-              二级缓存 cacheEnabled 只是个总开关，如果要让二级缓存真正生效还需要在 XXmapper.xml 文件中加入 <cache /> 。
-              一级缓存只在同一 SESSION 或者 STATEMENT 之间共享，二级缓存可以跨 SESSION，开启后它们默认具有如下特性：
 
-                     1.映射文件中所有的select语句将被缓存
-                     2.映射文件中所有的insert、update和delete语句都将刷会新缓存
-
-            　一二级缓存同时开启的情况下数据查询顺序是：
-                     二级缓存 -> 一级缓存 -> 数据库。
-                -->
     </settings>
 
     <!-- 定义别名，方便开发（返回、输出类型写成：store.cloudspace.pojo.User 不方便开发） -->

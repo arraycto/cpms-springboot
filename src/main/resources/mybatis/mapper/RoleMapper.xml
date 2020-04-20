@@ -11,10 +11,6 @@
         <result property="roleName" column="role_name"  />
         <result property="roleDescript" column="role_descript"/>
 
-        <!--
-            association 一对一关联  获取到角色对应的权限
-            property="rolePermission"  需要在Role 实体类中定义 rolePermission 属性 数据类型为 RolePermission
-        -->
         <association property="rolePermission" javaType="RolePermission">
             <id column="role_id" property="roleId"/>
             <result column="page_permission" property="pagePermission"/>
