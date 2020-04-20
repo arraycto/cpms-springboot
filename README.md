@@ -48,7 +48,7 @@
 
 后台登录账号密码： admin 123456
 
-​    
+个人站点记录工作中的总结：http://www.liuzaichun.cn/  
 
 
 
