@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -85,8 +86,8 @@ public class UserController extends CommonController {
         }
 
         User user = new User();
-        user.setCreateTime(new Date());
-        user.setLastLoginTime(new Date());
+        user.setCreateTime(LocalDateTime.now());
+        user.setLastLoginTime(LocalDateTime.now());
         user.setUserName(name);
         user.setPassword(ToolUtil.md5UserPwd(password));
 

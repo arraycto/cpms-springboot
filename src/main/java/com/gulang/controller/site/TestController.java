@@ -3,6 +3,7 @@ package com.gulang.controller.site;
 import com.gulang.controller.site.common.CreateThreadByCallable;
 import com.gulang.controller.site.service.WebSocketServer;
 
+import com.gulang.model.User;
 import com.gulang.service.UserService;
 import com.gulang.util.common.*;
 import org.apache.http.NameValuePair;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -430,7 +432,7 @@ public class TestController {
 
 
     /*
-     *  java API调用
+     *  java  API调用
      */
     @GetMapping(value = "/httpApi")
     public  void  httpApiRequest() throws IOException {
@@ -501,5 +503,14 @@ public class TestController {
         }
     }
 
+    @GetMapping(value = "/tmpTest")
+    public  User   tmpTest(){
+        User user = new User();
+        user.setCreateTime(LocalDateTime.now());
+        user.setLastLoginTime(LocalDateTime.now());
 
+        System.out.println(user);
+
+        return user;
+    }
 }
