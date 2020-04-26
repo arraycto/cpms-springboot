@@ -46,8 +46,6 @@
 - permission control
 - 基于 `vue-cli3` 脚手架进行构建，
 
-前端代码地址：https://github.com/gulang12/cpms-vue
-
 后台登录账号密码： admin 123456
 
 个人站点记录工作中的总结：http://www.liuzaichun.cn/  

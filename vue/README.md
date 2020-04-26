@@ -1,12 +1,9 @@
-### cpms-java项目的前端用户角色权限部分
-
-后端代码地址：https://github.com/gulang12/cpms-java
 
 ```bash
 # 克隆项目
 
 # 进入项目目录
-cd cpms-java-vue
+cd vue
 
 # 安装依赖
 npm install
