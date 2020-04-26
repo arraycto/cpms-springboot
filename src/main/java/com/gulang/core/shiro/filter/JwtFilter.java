@@ -41,7 +41,6 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
                                       ServletResponse response, Object mappedValue) throws UnauthorizedException {
 
          Map<String,Object> resultMap = new HashMap<String, Object>();
-
          try {
              executeLogin(request,response);
              return Boolean.TRUE;
