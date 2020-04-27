@@ -9,6 +9,9 @@ import com.gulang.util.common.JwtUtil;
 import com.gulang.util.common.ResponseResult;
 import com.gulang.util.common.ToolUtil;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +39,11 @@ public class LoginController extends CommonController
     @Autowired
     RolePermissionService rolePermissionService;
 
+    @ApiOperation(value="登入后台api", notes="post方式传递提交账号和密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", paramType = "query", value = "账号", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", paramType = "query", value = "密码", required = true, dataType = "String")
+    })
     @RequestMapping(value = "/ulogin",method = RequestMethod.POST)
     public Object submitLogin( String username, String password) {
 
@@ -73,6 +81,7 @@ public class LoginController extends CommonController
         }
     }
 
+    @ApiOperation(value="登出后台api", notes="目前暂时还没用到")
     @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public Object logout() {
 
