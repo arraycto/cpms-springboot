@@ -30,6 +30,7 @@ public class UserController extends CommonController {
     @Autowired
     RolePermissionService rolePermissionService;
 
+
     @RequestMapping(value = "/info",method = RequestMethod.GET)
     public Object userInfo(HttpServletRequest request) {
         /*

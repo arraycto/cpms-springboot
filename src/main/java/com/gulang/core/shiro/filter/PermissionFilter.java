@@ -33,6 +33,8 @@ public class PermissionFilter extends AccessControlFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request,
                                       ServletResponse response, Object mappedValue) throws Exception {
+
+        /*****************【获取JWT token信息，校验权限】********************/
         Map<String,Object> resultMap = new HashMap<String, Object>();
 
         HttpServletRequest httpRequest = ((HttpServletRequest)request);
@@ -46,6 +48,8 @@ public class PermissionFilter extends AccessControlFilter {
         if(null != url && url.startsWith(basePath)){
             url = url.replaceFirst(basePath, "");
         }
+
+        System.out.println("**********请求过滤器**********");
 
         //获取请求头部的token值，解析用户名，如果是 admin 则拥有所有权限
         String token      = httpRequest.getHeader("Token");
