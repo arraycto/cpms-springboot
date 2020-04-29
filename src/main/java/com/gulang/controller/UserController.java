@@ -4,6 +4,7 @@ import com.gulang.model.User;
 import com.gulang.service.RolePermissionService;
 import com.gulang.service.UserRoleService;
 import com.gulang.service.UserService;
+import com.gulang.util.annotation.NoRepeatSubmit;
 import com.gulang.util.common.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +79,7 @@ public class UserController extends CommonController {
         return new ResponseResult(EnumCode.RESPONSE_SUCCESS.getCode(),"查询成功",  pageData);
     }
 
+    @NoRepeatSubmit
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Object addUser(String name,String password,String roleIds) {
 

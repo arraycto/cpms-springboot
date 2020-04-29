@@ -3,6 +3,7 @@ package com.gulang.controller;
 import com.gulang.model.Role;
 import com.gulang.service.RolePermissionService;
 import com.gulang.service.RoleService;
+import com.gulang.util.annotation.NoRepeatSubmit;
 import com.gulang.util.common.EnumCode;
 import com.gulang.util.common.PageManager;
 import com.gulang.util.common.ResponseResult;
@@ -35,6 +36,7 @@ public class RoleController {
         return new ResponseResult(EnumCode.RESPONSE_SUCCESS.getCode(),"查询成功",pageData);
     }
 
+    @NoRepeatSubmit
     @PostMapping("/add")
     public  Object addRole(Role roleInfo,String pagePermission,String handlePermission){
         int count = roleService.findRepeatRole(roleInfo.getRoleName(),null);

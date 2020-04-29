@@ -27,7 +27,12 @@ spring:
         login-username: druid
         login-password: druid
 
-
+  redis: #【redis 配置】
+    database: 0   # 存放的数据库
+    host: 192.168.129.158
+    port: 6379
+    timout: 3000 # 单位：毫秒
+    password:
 
 mybatis: #【加载mybatis的xml映射文件】
 

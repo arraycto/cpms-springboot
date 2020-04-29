@@ -49,7 +49,6 @@ public class PermissionFilter extends AccessControlFilter {
             url = url.replaceFirst(basePath, "");
         }
 
-        System.out.println("**********请求过滤器**********");
 
         //获取请求头部的token值，解析用户名，如果是 admin 则拥有所有权限
         String token      = httpRequest.getHeader("Token");
