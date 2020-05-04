@@ -43,6 +43,7 @@
 - websocket
 
 - POI
+- Redis
 
 - .....
 
