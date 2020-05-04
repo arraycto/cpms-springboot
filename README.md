@@ -18,6 +18,7 @@
 - MySQL5.7
 - Node-version10*
 - redis
+- Maven
 
 **项目集成的功能：**
 
