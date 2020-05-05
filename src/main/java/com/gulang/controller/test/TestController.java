@@ -1,7 +1,7 @@
-package com.gulang.controller.site;
+package com.gulang.controller.test;
 
-import com.gulang.controller.site.common.CreateThreadByCallable;
-import com.gulang.controller.site.service.WebSocketServer;
+import com.gulang.controller.test.common.CreateThreadByCallable;
+import com.gulang.controller.test.service.WebSocketServer;
 
 import com.gulang.model.User;
 import com.gulang.service.UserService;

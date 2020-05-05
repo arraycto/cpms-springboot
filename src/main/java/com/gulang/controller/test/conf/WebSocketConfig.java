@@ -1,4 +1,4 @@
-package com.gulang.controller.site.conf;
+package com.gulang.controller.test.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
